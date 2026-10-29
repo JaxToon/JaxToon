@@ -23,6 +23,7 @@ TOKEN = os.environ.get("GITHUB_TOKEN", "")
 # they are left out of the language card. Edit this list to taste.
 EXCLUDE_LANGS = {"Jupyter Notebook", "HTML", "CSS", "TeX"}
 TOP_N = 6
+MIN_SHARE = 0.005  # hide languages under 0.5% of the total
 
 THEMES = {
     "light": {"title": "#134E5E", "text": "#24292f", "muted": "#57606a",
@@ -91,12 +92,32 @@ def fmt(n):
     return f"{n / 1000:.1f}k" if n >= 1000 else str(n)
 
 
-def stats_svg(d, t):
+def stats_rows(d):
     rows = [("Public repos", d["repos"]), ("Stars earned", d["stars"]),
             ("Followers", d["followers"])]
     if d["commits"] is not None:
         rows.insert(0, ("Commits (last 12 months)", d["commits"]))
-    h = 70 + 30 * len(rows)
+    # A zero row draws the eye to a weak number; it reappears once it is > 0.
+    return [(label, value) for label, value in rows if value or label == "Public repos"]
+
+
+def top_langs(d):
+    total = sum(d["langs"].values()) or 1
+    top = [kv for kv in sorted(d["langs"].items(), key=lambda kv: -kv[1])
+           if kv[1] / total >= MIN_SHARE][:TOP_N]
+    return top, total
+
+
+def card_height(d):
+    """One height for both cards, so they line up side by side."""
+    stats_h = 70 + 30 * len(stats_rows(d))
+    langs_h = 100 + 25 * ((len(top_langs(d)[0]) + 1) // 2)
+    return max(stats_h, langs_h, 130)
+
+
+def stats_svg(d, t):
+    rows = stats_rows(d)
+    h = card_height(d)
     parts = [f'<text x="25" y="38" class="title">Firgy\'s GitHub</text>']
     for i, (label, value) in enumerate(rows):
         y = 75 + 30 * i
@@ -108,8 +129,7 @@ def stats_svg(d, t):
 
 
 def langs_svg(d, t):
-    total = sum(d["langs"].values()) or 1
-    top = sorted(d["langs"].items(), key=lambda kv: -kv[1])[:TOP_N]
+    top, total = top_langs(d)
     shown = sum(v for _, v in top) or 1
     w, bar_w = 400, 350
     parts = [f'<text x="25" y="38" class="title">Most used languages</text>',
@@ -129,8 +149,7 @@ def langs_svg(d, t):
             f'<circle cx="{cx}" cy="{cy - 4}" r="5" fill="{color}"/>'
             f'<text x="{cx + 12}" y="{cy}" class="label">{escape(name)} '
             f'<tspan class="muted">{100 * size / total:.1f}%</tspan></text>')
-    h = 95 + 25 * ((len(top) + 1) // 2) + 5
-    return wrap(w, max(h, 120), t, "".join(parts))
+    return wrap(w, card_height(d), t, "".join(parts))
 
 
 def wrap(w, h, t, body):

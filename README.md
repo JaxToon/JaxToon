@@ -1,10 +1,8 @@
 <!-- Header -->
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&height=200&color=0:134E5E,100:71B280&text=Firgy%20Matannatikka&fontColor=ffffff&fontSize=46&fontAlignY=36&desc=Data%20%C2%B7%20AI%20%C2%B7%20Human%20Capital&descAlignY=56&descSize=18&animation=fadeIn" alt="header"/>
-</p>
-
-<p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&pause=1200&color=71B280&center=true&vCenter=true&width=640&lines=Officer+Development+Program+%40+BNI;Researching+why+LLMs+hallucinate;Ex-StickEarn+%C2%B7+Telkomsel+%C2%B7+Solve+Education!;Turning+messy+data+into+maps%2C+models+%26+decisions;Jakarta-based%2C+Pekanbaru-rooted+%F0%9F%8C%BF" alt="typing intro"/>
+  <br/>
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=18&pause=1200&color=71B280&center=true&vCenter=true&width=640&height=30&lines=Officer+Development+Program+%40+BNI;Researching+why+LLMs+hallucinate;Ex-StickEarn+%C2%B7+Telkomsel+%C2%B7+Solve+Education!;Turning+messy+data+into+maps%2C+models+%26+decisions;Jakarta-based%2C+Pekanbaru-rooted+%F0%9F%8C%BF" alt="typing intro"/>
 </p>
 
 <p align="center">
